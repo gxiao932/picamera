@@ -24,6 +24,7 @@ different = True
 length = len(list)
 oldestDate = 991231
 
+# you seems not deleting anything
 def DeleteOldest():
 	while difference:
 		difference = False
