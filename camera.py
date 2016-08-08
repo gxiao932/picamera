@@ -9,6 +9,7 @@ from PIL import ImageFont
 from PIL import Image
 from PIL import ImageDraw
 
+DEBUG = False
 camera = PiCamera()
 
 imageName = '/mnt/images/recent.jpg'
@@ -23,8 +24,8 @@ dateList = os.listdir('/home/pi/images')
 different = True
 length = len(list)
 oldestDate = 991231
-
-# you seems not deleting anything
+ 
+#deletes things now
 def DeleteOldest():
 	while difference:
 		difference = False
@@ -40,7 +41,8 @@ def DeleteOldest():
 	finalDate = str(oldestDate)
 	finalDate = list(finalDate)
 
-	print (finalDate[2] + finalDate[3] + '-'+ finalDate[4] + finalDate[5] + '-' + finalDate[0] + finalDate[1])
+	deleteName = finalDate[2] + finalDate[3] + '-'+ finalDate[4] + finalDate[5] + '-' + finalDate[0] + finalDate[1]
+	shutil.rmtree(root+'/'+deleteName)
 
 
 
