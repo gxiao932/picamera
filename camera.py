@@ -12,21 +12,24 @@ from PIL import ImageDraw
 DEBUG = False
 camera = PiCamera()
 
-imageName = '/mnt/images/recent.jpg'
+imageName = '/mnt/vincent/images/recent.jpg'
 root = '/home/pi/images/'
 var = 1
 delay = 60
-lastTime = time.strftime('image-%m-%d-%y-%H:%M:%S')
+lastTime = time.strftime('%m-%d-%y-%H:%M:%S')
 firstDate = time.strftime('%m-%d-%y')
 rotate = 180
-tm = time.time()
+tm = time.strftime('%H')
 dateList = os.listdir('/home/pi/images')
-different = True
-length = len(list)
+difference = True
+length = len(dateList)
 oldestDate = 991231
  
 #deletes things now
 def DeleteOldest():
+	global oldestDate
+	global difference
+
 	while difference:
 		difference = False
 
@@ -47,7 +50,7 @@ def DeleteOldest():
 
 
 
-while var < 3:
+while True:
 
 	date = time.strftime('%m-%d-%y')
 	st = os.statvfs('/')
@@ -56,24 +59,27 @@ while var < 3:
 		os.makedirs(root+date)
 
 	time.sleep(delay)
-	currTime = time.strftime('%m-%d-%y-%H:%M:%S')
-	archiveName = root+date+'/'+'image-'+currTime
-	camera.capture(archiveName)
 
-	img = Image.open(archiveName)
-	img = img.rotate(rotate)
-	draw = ImageDraw.Draw(img)
-	font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSans.ttf', 20)
-	draw.text((0,0), currTime, (255,255,255), font = font)
-	img.save(imageName)
+	if 5 < tm < 12:
+		tm = time.strftime('%H')
+		currTime = time.strftime('%m-%d-%y-%H:%M:%S')
+		archiveName = root+date+'/'+'image-'+currTime+'.jpg'
+		camera.capture(archiveName)
 
-	try:
-		shutil.copy2(archivename, imageName)
-	except IOError:
-		break
+		img = Image.open(archiveName)
+		img = img.rotate(rotate)
+		draw = ImageDraw.Draw(img)
+		font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSans.ttf', 20)
+		draw.text((0,0), currTime, (255,255,255), font = font)
+		img.save(archiveName)
 
-	lastTime = 'image' + currTime
-	#var += 1
+		try:
+			shutil.copy2(archiveName, imageName)
+		except IOError:
+			break
 
-	if st.f_bavail < 24414:
-		DeleteOldest()
+		lastTime = 'image' + currTime
+		#var += 1
+
+		if st.f_bavail < 24414:
+			DeleteOldest()
